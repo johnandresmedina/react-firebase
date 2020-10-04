@@ -1,0 +1,108 @@
+{
+  "name": "base-react-app",
+  "version": "0.1.0",
+  "description": "A base create-react-app to be used as a template",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnandresmedina/base-react-app.git"
+  },
+  "keywords": [
+    "react.js"
+  ],
+  "author": "John Medina",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint src --color",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,json,ts,tsx,scss,md}\"",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,ts,tsx,scss,md}\" ",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@reduxjs/toolkit": "^1.4.0",
+    "fontsource-roboto": "^3.0.3",
+    "node-sass": "^4.14.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.1",
+    "redux": "^4.0.5"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.5.0",
+    "@testing-library/react": "^10.0.4",
+    "@testing-library/user-event": "^10.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.2",
+    "prettier": "^2.0.5",
+    "redux-logger": "^3.0.6"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:jsx-a11y/recommended"
+    ],
+    "plugins": [
+      "react",
+      "jsx-a11y"
+    ],
+    "ignorePatterns": [
+      "serviceWorker.js"
+    ],
+    "rules": {
+      "no-console": [
+        "error",
+        {
+          "allow": [
+            "warn",
+            "error"
+          ]
+        }
+      ],
+      "react/sort-prop-types": 2
+    }
+  },
+  "prettier": {
+    "printWidth": 120,
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "useTabs": false,
+    "jsxBracketSameLine": true,
+    "jsxSingleQuote": true,
+    "arrowParens": "avoid",
+    "endOfLine": "lf"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": "eslint",
+    "src/**/*.{js,jsx,json,ts,tsx,scss,md}": "prettier --write"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
