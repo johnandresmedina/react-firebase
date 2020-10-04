@@ -2,8 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Layout from '../layout';
-import App from '../app';
-import About from '../about';
+import SignIn from '../auth/SignIn';
+import Dashboard from '../dashboard/Dashboard';
+import ProjectDetails from '../projects/ProjectDetails';
 
 const Routes = () => {
   return (
@@ -11,10 +12,13 @@ const Routes = () => {
       <Layout>
         <Switch>
           <Route exact path='/'>
-            <App />
+            <Dashboard />
           </Route>
-          <Route path='/about'>
-            <About />
+          <Route path='/signIn'>
+            <SignIn />
+          </Route>
+          <Route path='/project/:id'>
+            <ProjectDetails />
           </Route>
         </Switch>
       </Layout>

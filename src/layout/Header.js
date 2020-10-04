@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import { makeStyles, AppBar, Toolbar, Typography, IconButton, Link, Avatar } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 
 import Sidebar from './Sidebar';
+import SignedInLinks from './SignedInLinks';
+import SignedOutLinks from './SignedOutLinks';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,16 +16,16 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    '&:hover': { textDecoration: 'none' },
+  },
+  avatar: {
+    marginLeft: theme.spacing(2),
   },
 }));
 
 const Header = () => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleClick = event => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
 
   const toggleSidebar = event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -53,28 +48,12 @@ const Header = () => {
             onClick={toggleSidebar}>
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' className={classes.title}>
-            Base App
-          </Typography>
-          <div>
-            <Button color='inherit' variant='outlined' onClick={handleClick}>
-              Options
-            </Button>
-            <Menu
-              id='simple-menu'
-              elevation={3}
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}>
-              <MenuItem component={RouterLink} onClick={handleClose} to='/'>
-                Home
-              </MenuItem>
-              <MenuItem component={RouterLink} onClick={handleClose} to='/about'>
-                About
-              </MenuItem>
-            </Menu>
-          </div>
+          <Link className={classes.title} color='inherit' component={RouterLink} to='/'>
+            <Typography variant='h6'>Project Management</Typography>
+          </Link>
+          <SignedInLinks />
+          <SignedOutLinks />
+          <Avatar className={classes.avatar}>H</Avatar>
         </Toolbar>
       </AppBar>
     </div>
