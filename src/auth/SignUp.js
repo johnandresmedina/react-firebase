@@ -45,8 +45,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignUp() {
   const classes = useStyles();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -63,9 +65,33 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Sign in
+            Sign up
           </Typography>
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
+            <TextField
+              variant='outlined'
+              margin='normal'
+              required
+              fullWidth
+              id='firstname'
+              label='First Name'
+              name='firstname'
+              autoComplete='firstname'
+              value={firstName}
+              onChange={event => setFirstName(event.target.value)}
+            />
+            <TextField
+              variant='outlined'
+              margin='normal'
+              required
+              fullWidth
+              id='lastname'
+              label='Last Name'
+              name='lastname'
+              autoComplete='lastname'
+              value={lastName}
+              onChange={event => setLastName(event.target.value)}
+            />
             <TextField
               variant='outlined'
               margin='normal'

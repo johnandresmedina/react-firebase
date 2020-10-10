@@ -13,7 +13,7 @@ export default function SignedInLinks() {
 
   return (
     <Box>
-      <Link className={classes.link} color='inherit' component={RouterLink} to='/'>
+      <Link className={classes.link} color='inherit' component={RouterLink} to='/create'>
         New Project
       </Link>
       <Link className={classes.link} color='inherit' component={RouterLink} to='/'>

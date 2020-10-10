@@ -2,6 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 
 import configureAppStore from '../store/configureStore';
+import ProjectProvider from '../context/projectContext';
 import Routes from './Routes';
 
 const Main = () => {
@@ -9,7 +10,9 @@ const Main = () => {
 
   return (
     <Provider store={store}>
-      <Routes />
+      <ProjectProvider>
+        <Routes />
+      </ProjectProvider>
     </Provider>
   );
 };

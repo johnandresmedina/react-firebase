@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
     '&:hover': { textDecoration: 'none' },
   },
   avatar: {
+    textDecoration: 'none',
     marginLeft: theme.spacing(2),
   },
 }));
@@ -53,7 +54,9 @@ const Header = () => {
           </Link>
           <SignedInLinks />
           <SignedOutLinks />
-          <Avatar className={classes.avatar}>H</Avatar>
+          <Avatar component={RouterLink} to='/' className={classes.avatar}>
+            JM
+          </Avatar>
         </Toolbar>
       </AppBar>
     </div>

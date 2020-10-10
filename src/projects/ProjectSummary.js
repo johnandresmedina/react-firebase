@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Paper, Typography } from '@material-ui/core';
 
-export default function Projects({ title, postedBy, date }) {
+export default function Projects({ project }) {
   return (
-    <Box className='project-summary'>
-      <Box className='card-content'>
+    <Box className='project-summary' component={Paper} elevation={2} square mb={1}>
+      <Box className='card-content' p={2}>
         <Box className='card-title'>
-          <Typography variant='h5'>{title}</Typography>
+          <Typography variant='h5'>{project.title}</Typography>
         </Box>
         <Box className='card-title'>
-          <Typography>{postedBy}</Typography>
+          <Typography>Posted by John Medina</Typography>
         </Box>
         <Box className='card-title'>
-          <Typography color='textSecondary'>{date}</Typography>
+          <Typography color='textSecondary'>Today October 15 2040</Typography>
         </Box>
       </Box>
     </Box>
@@ -21,7 +21,7 @@ export default function Projects({ title, postedBy, date }) {
 }
 
 Projects.propTypes = {
-  date: PropTypes.string.isRequired,
-  postedBy: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  project: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+  }),
 };

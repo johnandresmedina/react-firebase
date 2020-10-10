@@ -13,11 +13,11 @@ export default function SignedOutLinks() {
 
   return (
     <Box>
-      <Link className={classes.link} color='inherit' component={RouterLink} to='/'>
+      <Link className={classes.link} color='inherit' component={RouterLink} to='/signUp'>
         Signup
       </Link>
-      <Link className={classes.link} color='inherit' component={RouterLink} to='/'>
-        LogIn
+      <Link className={classes.link} color='inherit' component={RouterLink} to='/signIn'>
+        Login
       </Link>
     </Box>
   );
