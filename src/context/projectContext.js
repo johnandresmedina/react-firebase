@@ -1,16 +1,18 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useMemo, useReducer } from 'react';
 import PropTypes from 'prop-types';
 
-export const ProjectContext = createContext([]);
+import projectReducer, { initialState } from '../projects/projectReducer';
+
+export const ProjectContext = createContext({});
 
 export default function ProjectProvider({ children }) {
-  const [projects] = useState([
-    { id: 1, title: 'Title 1', content: 'Content 1' },
-    { id: 2, title: 'Title 2', content: 'Content 2' },
-    { id: 3, title: 'Title 3', content: 'Content 3' },
-  ]);
+  const [state, dispatch] = useReducer(projectReducer, initialState);
 
-  return <ProjectContext.Provider value={projects}>{children}</ProjectContext.Provider>;
+  const contextValue = useMemo(() => {
+    return { state, dispatch };
+  }, [state, dispatch]);
+
+  return <ProjectContext.Provider value={contextValue}>{children}</ProjectContext.Provider>;
 }
 
 ProjectProvider.propTypes = {

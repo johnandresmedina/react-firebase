@@ -5,7 +5,9 @@ import { ProjectContext } from '../context/projectContext';
 import ProjectSummary from './ProjectSummary';
 
 export default function Projects() {
-  const projects = useContext(ProjectContext);
+  const {
+    state: { projects },
+  } = useContext(ProjectContext);
 
   return (
     <Box className='project-list'>

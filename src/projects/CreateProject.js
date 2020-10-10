@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, TextField, Paper, Grid, Typography, makeStyles } from '@material-ui/core';
+
+import { ProjectContext } from '../context/projectContext';
+import { createProject } from './projectReducer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,9 +26,12 @@ export default function CreateProject() {
   const classes = useStyles();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const { dispatch } = useContext(ProjectContext);
 
   const handleSubmit = event => {
     event.preventDefault();
+
+    dispatch(createProject({ title, content }));
   };
 
   return (
@@ -63,7 +69,7 @@ export default function CreateProject() {
               onChange={event => setContent(event.target.value)}
             />
             <Button type='submit' variant='contained' color='primary' className={classes.submit}>
-              Sign In
+              Create project
             </Button>
           </form>
         </div>
