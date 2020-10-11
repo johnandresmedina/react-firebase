@@ -1,12 +1,10 @@
 import React, { createContext, useMemo, useReducer } from 'react';
 import PropTypes from 'prop-types';
 
+import { withThunk } from '../utils/utils';
 import projectReducer, { initialState } from '../projects/projectReducer';
 
 export const ProjectContext = createContext({});
-
-const withThunk = dispatch => actionOrThunk =>
-  typeof actionOrThunk === 'function' ? actionOrThunk(dispatch) : dispatch(actionOrThunk);
 
 export default function ProjectProvider({ children }) {
   const [state, dispatch] = useReducer(projectReducer, initialState);

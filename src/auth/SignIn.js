@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, makeStyles } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+
+import { AuthContext } from '../context/authContext';
+import { login } from './authReducer';
 
 function Copyright() {
   return (
@@ -49,9 +52,12 @@ export default function SignIn() {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { dispatch } = useContext(AuthContext);
 
   const handleSubmit = event => {
     event.preventDefault();
+
+    dispatch(login(email, password));
   };
 
   return (

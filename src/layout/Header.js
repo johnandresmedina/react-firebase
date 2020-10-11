@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles, AppBar, Toolbar, Typography, IconButton, Link, Avatar } from '@material-ui/core';
+import { makeStyles, AppBar, Toolbar, Typography, IconButton, Link } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import Sidebar from './Sidebar';
 import SignedInLinks from './SignedInLinks';
 import SignedOutLinks from './SignedOutLinks';
+import { AuthContext } from '../context/authContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,15 +19,14 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     '&:hover': { textDecoration: 'none' },
   },
-  avatar: {
-    textDecoration: 'none',
-    marginLeft: theme.spacing(2),
-  },
 }));
 
 const Header = () => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
+  const {
+    state: { user },
+  } = useContext(AuthContext);
 
   const toggleSidebar = event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -35,6 +35,10 @@ const Header = () => {
 
     setIsOpen(isOpen => !isOpen);
   };
+
+  const links = useMemo(() => {
+    return user?.uid ? <SignedInLinks /> : <SignedOutLinks />;
+  }, [user]);
 
   return (
     <div className={classes.root}>
@@ -52,11 +56,7 @@ const Header = () => {
           <Link className={classes.title} color='inherit' component={RouterLink} to='/'>
             <Typography variant='h6'>Project Management</Typography>
           </Link>
-          <SignedInLinks />
-          <SignedOutLinks />
-          <Avatar component={RouterLink} to='/' className={classes.avatar}>
-            JM
-          </Avatar>
+          {links}
         </Toolbar>
       </AppBar>
     </div>
