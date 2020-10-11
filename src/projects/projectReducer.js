@@ -1,6 +1,8 @@
 import firebase from '../config/firebase';
 
 const CREATE_PROJECT = 'CREATE_PROJECT';
+const CREATE_PROJECT_FAILED = 'CREATE_PROJECT_FAILED';
+
 const FETCH_STARTED = 'FETCH_STARTED';
 const FETCH_SUCCEEDED = 'FETCH_SUCCEEDED';
 const FETCH_FAILED = 'FETCH_FAILED';
@@ -21,13 +23,30 @@ const projectReducer = (state, { type, payload }) => {
       return { ...state, status: 'rejected', error: payload };
 
     case CREATE_PROJECT:
-      return { projects: [...state.projects, payload] };
+      return { ...state, projects: [...state.projects, payload] };
+    case CREATE_PROJECT_FAILED:
+      return { ...state, error: payload };
     default:
       return state;
   }
 };
 
-const createProject = ({ title, content }) => ({ type: CREATE_PROJECT, payload: { title, content } });
+const createProject = ({ title, content }) => async dispatch => {
+  try {
+    let project = await firebase.firestore().collection('projects').add({
+      title,
+      content,
+      authorFirstName: 'John',
+      authorLastName: 'Medina',
+      authorId: 12345,
+      createdAt: new Date(),
+    });
+
+    dispatch({ type: CREATE_PROJECT, payload: { id: project.id, title, content } });
+  } catch (error) {
+    dispatch({ type: CREATE_PROJECT_FAILED, payload: error });
+  }
+};
 
 const getProjectsStarted = () => ({ type: FETCH_STARTED });
 const getProjectsSucceeded = projects => ({ type: FETCH_SUCCEEDED, payload: projects });
@@ -37,7 +56,7 @@ const fetchProjects = () => async dispatch => {
   dispatch(getProjectsStarted());
 
   try {
-    let projects = await firebase.firestore().collection('projects').get();
+    let projects = await firebase.firestore().collection('projects').orderBy('title').get();
     projects = projects.docs.map(doc => doc.data());
     dispatch(getProjectsSucceeded(projects));
   } catch (error) {

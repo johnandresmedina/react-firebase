@@ -12,9 +12,10 @@ export default function Projects() {
   } = useContext(ProjectContext);
 
   useEffect(() => {
-    dispatch(fetchProjects());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (projects.length === 0) {
+      dispatch(fetchProjects());
+    }
+  }, [dispatch, projects]);
 
   const getContent = () => {
     let content = null;
