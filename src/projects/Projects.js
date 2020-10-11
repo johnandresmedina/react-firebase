@@ -20,10 +20,10 @@ export default function Projects() {
   } = useContext(ProjectContext);
 
   useEffect(() => {
-    if (projects.length === 0) {
+    if (projects.length === 0 && status !== 'pending') {
       dispatch(fetchProjects());
     }
-  }, [dispatch, projects]);
+  }, [dispatch, projects, status]);
 
   const getContent = () => {
     let content = null;

@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, TextField, Paper, Grid, Typography, makeStyles } from '@material-ui/core';
 
 import { ProjectContext } from '../context/projectContext';
-import { createProject } from './projectReducer';
+import { createProject } from './projectService';
+import { addProject } from './projectReducer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,14 +26,26 @@ const useStyles = makeStyles(theme => ({
 
 export default function CreateProject() {
   const classes = useStyles();
+  const history = useHistory();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [status, setStatus] = useState('idle');
+  const [error, setError] = useState(null);
   const { dispatch } = useContext(ProjectContext);
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
 
-    dispatch(createProject({ title, content }));
+    try {
+      setStatus('pending');
+      const project = await createProject({ title, content });
+      dispatch(addProject(project));
+      setStatus('resolved');
+      history.push('/');
+    } catch (error) {
+      setStatus('rejected');
+      setError(error);
+    }
   };
 
   return (
@@ -68,9 +82,19 @@ export default function CreateProject() {
               value={content}
               onChange={event => setContent(event.target.value)}
             />
-            <Button type='submit' variant='contained' color='primary' className={classes.submit}>
+            <Button
+              type='submit'
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+              disabled={status === 'pending'}>
               Create project
             </Button>
+            {error && (
+              <Typography component='p' color='textPrimary'>
+                {`There's been an error creating the project, please try again`}
+              </Typography>
+            )}
           </form>
         </div>
       </Grid>

@@ -1,7 +1,6 @@
-import firebase from '../config/firebase';
+import { getProjectsOrderedBy } from './projectService';
 
-const CREATE_PROJECT = 'CREATE_PROJECT';
-const CREATE_PROJECT_FAILED = 'CREATE_PROJECT_FAILED';
+const ADD_PROJECT = 'ADD_PROJECT';
 
 const FETCH_STARTED = 'FETCH_STARTED';
 const FETCH_SUCCEEDED = 'FETCH_SUCCEEDED';
@@ -22,31 +21,14 @@ const projectReducer = (state, { type, payload }) => {
     case FETCH_FAILED:
       return { ...state, status: 'rejected', error: payload };
 
-    case CREATE_PROJECT:
+    case ADD_PROJECT:
       return { ...state, projects: [...state.projects, payload] };
-    case CREATE_PROJECT_FAILED:
-      return { ...state, error: payload };
     default:
       return state;
   }
 };
 
-const createProject = ({ title, content }) => async dispatch => {
-  try {
-    let project = await firebase.firestore().collection('projects').add({
-      title,
-      content,
-      authorFirstName: 'John',
-      authorLastName: 'Medina',
-      authorId: 12345,
-      createdAt: new Date(),
-    });
-
-    dispatch({ type: CREATE_PROJECT, payload: { id: project.id, title, content } });
-  } catch (error) {
-    dispatch({ type: CREATE_PROJECT_FAILED, payload: error });
-  }
-};
+const addProject = ({ id, title, content }) => ({ type: ADD_PROJECT, payload: { id, title, content } });
 
 const getProjectsStarted = () => ({ type: FETCH_STARTED });
 const getProjectsSucceeded = projects => ({ type: FETCH_SUCCEEDED, payload: projects });
@@ -56,8 +38,7 @@ const fetchProjects = () => async dispatch => {
   dispatch(getProjectsStarted());
 
   try {
-    let projects = await firebase.firestore().collection('projects').orderBy('title').get();
-    projects = projects.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const projects = await getProjectsOrderedBy('title');
     dispatch(getProjectsSucceeded(projects));
   } catch (error) {
     dispatch(getProjectsFailed(error));
@@ -66,4 +47,4 @@ const fetchProjects = () => async dispatch => {
 
 export default projectReducer;
 
-export { initialState, fetchProjects, createProject };
+export { initialState, fetchProjects, addProject };
