@@ -57,7 +57,7 @@ const fetchProjects = () => async dispatch => {
 
   try {
     let projects = await firebase.firestore().collection('projects').orderBy('title').get();
-    projects = projects.docs.map(doc => doc.data());
+    projects = projects.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     dispatch(getProjectsSucceeded(projects));
   } catch (error) {
     dispatch(getProjectsFailed(error));

@@ -1,11 +1,19 @@
 import React, { useContext, useEffect } from 'react';
-import Box from '@material-ui/core/Box';
+import { Link } from 'react-router-dom';
+import { Box, makeStyles } from '@material-ui/core';
 
 import { ProjectContext } from '../context/projectContext';
 import { fetchProjects } from './projectReducer';
 import ProjectSummary from './ProjectSummary';
 
+const useStyles = makeStyles({
+  link: {
+    textDecoration: 'none',
+  },
+});
+
 export default function Projects() {
+  const classes = useStyles();
   const {
     state: { projects, status },
     dispatch,
@@ -23,7 +31,11 @@ export default function Projects() {
     if (status === 'idle' || status === 'pending') {
       content = 'loading...';
     } else if (status === 'resolved') {
-      content = projects.map(project => <ProjectSummary key={project.id} project={project} />);
+      content = projects.map(project => (
+        <Link className={classes.link} key={project.id} to={`/project/${project.id}`}>
+          <ProjectSummary project={project} />
+        </Link>
+      ));
     } else if (status === 'rejected') {
       content = `There's been an error, please try again`;
     }

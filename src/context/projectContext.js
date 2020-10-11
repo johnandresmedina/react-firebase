@@ -5,9 +5,8 @@ import projectReducer, { initialState } from '../projects/projectReducer';
 
 export const ProjectContext = createContext({});
 
-function withThunk(dispatch) {
-  return actionOrThunk => (typeof actionOrThunk === 'function' ? actionOrThunk(dispatch) : dispatch(actionOrThunk));
-}
+const withThunk = dispatch => actionOrThunk =>
+  typeof actionOrThunk === 'function' ? actionOrThunk(dispatch) : dispatch(actionOrThunk);
 
 export default function ProjectProvider({ children }) {
   const [state, dispatch] = useReducer(projectReducer, initialState);
