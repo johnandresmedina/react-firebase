@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, makeStyles } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+
+import { signUp } from '../auth/authService';
 
 function Copyright() {
   return (
@@ -51,9 +54,18 @@ export default function SignUp() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const history = useHistory();
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
+
+    try {
+      await signUp(email, password, firstName, lastName);
+      history.push('/');
+    } catch (error) {
+      setError(error?.message);
+    }
   };
 
   return (
@@ -120,6 +132,7 @@ export default function SignUp() {
             <Button type='submit' fullWidth variant='contained' color='primary' className={classes.submit}>
               Sign In
             </Button>
+            {error && <Box>{error}</Box>}
             <Grid container>
               <Grid item>
                 <Link href='#' variant='body2'>

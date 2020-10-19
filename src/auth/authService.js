@@ -8,6 +8,14 @@ const authService = {
   signOut: async () => {
     await firebase.auth().signOut();
   },
+  signUp: async (email, password, firstName, lastName) => {
+    const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+    await firebase.firestore().collection('users').doc(result?.user?.uid).set({
+      firstName,
+      lastName,
+    });
+  },
 };
 
-export const { signIn, signOut } = authService;
+export const { signIn, signOut, signUp } = authService;
