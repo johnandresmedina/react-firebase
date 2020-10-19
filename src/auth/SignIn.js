@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, makeStyles } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
@@ -52,7 +53,17 @@ export default function SignIn() {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { dispatch } = useContext(AuthContext);
+  const {
+    state: { user },
+    dispatch,
+  } = useContext(AuthContext);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (user) {
+      history.push('/');
+    }
+  }, [history, user]);
 
   const handleSubmit = event => {
     event.preventDefault();

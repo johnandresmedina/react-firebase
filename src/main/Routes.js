@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Layout from '../layout';
+import PrivateRoute from '../layout/PrivateRoute';
 import SignIn from '../auth/SignIn';
 import SignUp from '../auth/SignUp';
 import Dashboard from '../dashboard/Dashboard';
@@ -13,21 +14,21 @@ const Routes = () => {
     <Router>
       <Layout>
         <Switch>
-          <Route exact path='/'>
+          <PrivateRoute exact path='/'>
             <Dashboard />
-          </Route>
+          </PrivateRoute>
           <Route path='/signIn'>
             <SignIn />
           </Route>
           <Route path='/signUp'>
             <SignUp />
           </Route>
-          <Route path='/create'>
+          <PrivateRoute path='/create'>
             <CreateProject />
-          </Route>
-          <Route path='/project/:id'>
+          </PrivateRoute>
+          <PrivateRoute path='/project/:id'>
             <ProjectDetails />
-          </Route>
+          </PrivateRoute>
         </Switch>
       </Layout>
     </Router>
