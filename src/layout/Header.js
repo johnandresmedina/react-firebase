@@ -37,7 +37,7 @@ const Header = () => {
   };
 
   const links = useMemo(() => {
-    return user?.uid ? <SignedInLinks /> : <SignedOutLinks />;
+    return user?.uid ? <SignedInLinks user={user} /> : <SignedOutLinks />;
   }, [user]);
 
   return (

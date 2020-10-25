@@ -1,4 +1,5 @@
 import firebase from '../config/firebase';
+import { setUserById } from './userService';
 
 const authService = {
   signIn: async (email, password) => {
@@ -11,10 +12,7 @@ const authService = {
   signUp: async (email, password, firstName, lastName) => {
     const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
 
-    await firebase.firestore().collection('users').doc(result?.user?.uid).set({
-      firstName,
-      lastName,
-    });
+    await setUserById(result?.user?.uid, firstName, lastName);
   },
 };
 

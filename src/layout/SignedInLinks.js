@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { makeStyles, Box, Link, Avatar } from '@material-ui/core';
 
 import { AuthContext } from '../context/authContext';
 import { signOut } from '../auth/authService';
+import { getUserById } from '../auth/userService';
 import { cleanLogin } from '../auth/authReducer';
 
 const useStyles = makeStyles(theme => ({
@@ -16,10 +18,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignedInLinks() {
+export default function SignedInLinks({ user }) {
   const classes = useStyles();
   const history = useHistory();
+  const [userProfile, setUserProfile] = useState(null);
   const { dispatch } = useContext(AuthContext);
+
+  useEffect(() => {
+    const getUserProfile = async () => {
+      try {
+        const profile = await getUserById(user.uid);
+        setUserProfile(profile);
+      } catch (error) {
+        //ignore for now
+      }
+    };
+
+    getUserProfile();
+  }, [user]);
 
   const handleLogOut = async () => {
     try {
@@ -43,8 +59,12 @@ export default function SignedInLinks() {
         </Link>
       </Box>
       <Avatar component={RouterLink} to='/' className={classes.avatar}>
-        JM
+        {userProfile ? `${userProfile.firstName[0]}${userProfile.lastName[0]}` : null}
       </Avatar>
     </>
   );
 }
+
+SignedInLinks.propTypes = {
+  user: PropTypes.object.isRequired,
+};
