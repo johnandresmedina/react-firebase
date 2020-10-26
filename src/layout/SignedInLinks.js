@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { makeStyles, Box, Link, Avatar } from '@material-ui/core';
 
 import { AuthContext } from '../context/authContext';
 import { signOut } from '../auth/authService';
-import { getUserById } from '../auth/userService';
 import { cleanLogin } from '../auth/authReducer';
+import { UserProfileContext } from '../context/userProfileContext';
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -18,24 +17,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignedInLinks({ user }) {
+export default function SignedInLinks() {
   const classes = useStyles();
   const history = useHistory();
-  const [userProfile, setUserProfile] = useState(null);
   const { dispatch } = useContext(AuthContext);
-
-  useEffect(() => {
-    const getUserProfile = async () => {
-      try {
-        const profile = await getUserById(user.uid);
-        setUserProfile(profile);
-      } catch (error) {
-        //ignore for now
-      }
-    };
-
-    getUserProfile();
-  }, [user]);
+  const userProfile = useContext(UserProfileContext);
 
   const handleLogOut = async () => {
     try {
@@ -64,7 +50,3 @@ export default function SignedInLinks({ user }) {
     </>
   );
 }
-
-SignedInLinks.propTypes = {
-  user: PropTypes.object.isRequired,
-};

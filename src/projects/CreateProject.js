@@ -5,6 +5,7 @@ import { Button, TextField, Paper, Grid, Typography, makeStyles } from '@materia
 import { ProjectContext } from '../context/projectContext';
 import { createProject } from './projectService';
 import { addProject } from './projectReducer';
+import { UserProfileContext } from '../context/userProfileContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,13 +33,14 @@ export default function CreateProject() {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState(null);
   const { dispatch } = useContext(ProjectContext);
+  const userProfile = useContext(UserProfileContext);
 
   const handleSubmit = async event => {
     event.preventDefault();
 
     try {
       setStatus('pending');
-      const project = await createProject({ title, content });
+      const project = await createProject({ title, content }, userProfile);
       dispatch(addProject(project));
       setStatus('resolved');
       history.push('/');
