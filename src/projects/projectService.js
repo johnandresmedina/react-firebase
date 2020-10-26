@@ -18,7 +18,14 @@ const projectService = {
       authorId: userProfile.id,
       createdAt: new Date(),
     });
-    return { id: project.id, title, content };
+
+    return {
+      id: project.id,
+      title,
+      content,
+      authorFirstName: userProfile.firstName,
+      authorLastName: userProfile.lastName,
+    };
   },
 };
 

@@ -28,7 +28,7 @@ const projectReducer = (state, { type, payload }) => {
   }
 };
 
-const addProject = ({ id, title, content }) => ({ type: ADD_PROJECT, payload: { id, title, content } });
+const addProject = project => ({ type: ADD_PROJECT, payload: project });
 
 const getProjectsStarted = () => ({ type: FETCH_STARTED });
 const getProjectsSucceeded = projects => ({ type: FETCH_SUCCEEDED, payload: projects });
