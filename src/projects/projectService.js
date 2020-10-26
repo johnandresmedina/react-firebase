@@ -19,12 +19,11 @@ const projectService = {
       createdAt: new Date(),
     });
 
+    const createdProject = await project.get();
+
     return {
       id: project.id,
-      title,
-      content,
-      authorFirstName: userProfile.firstName,
-      authorLastName: userProfile.lastName,
+      ...createdProject.data(),
     };
   },
 };

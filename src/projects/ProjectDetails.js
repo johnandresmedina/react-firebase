@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Grid, Paper, Divider, makeStyles, Typography } from '@material-ui/core';
+import formatRelative from 'date-fns/formatRelative';
 
 import { getProjectById } from './projectService';
 
@@ -57,7 +58,7 @@ export default function ProjectDetails() {
                   {`${project.authorFirstName} ${project.authorLastName}`}
                 </Typography>
                 <Typography component='p' color='textSecondary'>
-                  {project.createdAt.seconds}
+                  {formatRelative(project.createdAt.toDate(), new Date())}
                 </Typography>
               </Box>
             </Box>
