@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Grid, Paper, Divider, makeStyles, Typography } from '@material-ui/core';
+import { useQuery } from 'react-query';
 import formatRelative from 'date-fns/formatRelative';
 
 import { getProjectById } from './projectService';
@@ -13,33 +14,20 @@ const useStyles = makeStyles({
 
 export default function ProjectDetails() {
   const classes = useStyles();
-  const [project, setProject] = useState(null);
-  const [status, setStatus] = useState('idle');
-  const [error, setError] = useState(null);
-  const { id } = useParams();
-
-  useEffect(() => {
-    const getProjectDetails = async () => {
-      try {
-        setStatus('pending');
-        const projectById = await getProjectById(id);
-        setProject(projectById);
-        setStatus('resolved');
-      } catch (error) {
-        setStatus('rejected');
-        setError(error);
-      }
-    };
-
-    getProjectDetails();
-  }, [id]);
+  const { id: projectId } = useParams();
+  const { isLoading, isError, data: projectDetails, error, isSuccess } = useQuery(
+    ['project', projectId],
+    getProjectById,
+  );
 
   const getContent = () => {
     let content = null;
 
-    if (status === 'idle' || status === 'pending') {
+    if (isLoading) {
       content = 'Loading...';
-    } else if (status === 'resolved') {
+    } else if (isSuccess) {
+      const { title, content: projectContent, authorFirstName, authorLastName, createdAt } = projectDetails;
+
       content = (
         <Grid container className={classes.root}>
           <Grid item xs={6}>
@@ -47,25 +35,25 @@ export default function ProjectDetails() {
               <Box className='card-content' mb={2}>
                 <Box className='card-title'>
                   <Typography component='h1' variant='h5'>
-                    {project.title}
+                    {title}
                   </Typography>
-                  <Typography component='div'>{project.content}</Typography>
+                  <Typography component='div'>{projectContent}</Typography>
                 </Box>
               </Box>
               <Divider />
               <Box className='card-action'>
                 <Typography component='p' color='textSecondary'>
-                  {`${project.authorFirstName} ${project.authorLastName}`}
+                  {`${authorFirstName} ${authorLastName}`}
                 </Typography>
                 <Typography component='p' color='textSecondary'>
-                  {formatRelative(project.createdAt.toDate(), new Date())}
+                  {formatRelative(createdAt?.toDate(), new Date())}
                 </Typography>
               </Box>
             </Box>
           </Grid>
         </Grid>
       );
-    } else if (status === 'rejected') {
+    } else if (isError) {
       content = `An error has occurred, please try again: ${error}`;
     }
 

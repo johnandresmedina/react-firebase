@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { ReactQueryDevtools } from 'react-query-devtools';
 
 import * as serviceWorker from './serviceWorker';
 import Main from './main';
@@ -13,6 +14,7 @@ render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <Main />
+    <ReactQueryDevtools initialIsOpen />
   </ThemeProvider>,
 
   document.getElementById('root'),
