@@ -1,7 +1,7 @@
 import firebase from '../config/firebase';
 
 const projectService = {
-  getProjectsOrderedBy: async property => {
+  getProjectsOrderedBy: async (key, property) => {
     const projects = await firebase.firestore().collection('projects').orderBy(property).get();
     return projects.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   },

@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, makeStyles } from '@material-ui/core';
+import { useQuery } from 'react-query';
 
-import { ProjectContext } from '../context/projectContext';
-import { fetchProjects } from './projectReducer';
+import { getProjectsOrderedBy } from './projectService';
 import ProjectSummary from './ProjectSummary';
 
 const useStyles = makeStyles({
@@ -14,29 +14,20 @@ const useStyles = makeStyles({
 
 export default function Projects() {
   const classes = useStyles();
-  const {
-    state: { projects, status },
-    dispatch,
-  } = useContext(ProjectContext);
-
-  useEffect(() => {
-    if (projects.length === 0 && status !== 'pending') {
-      dispatch(fetchProjects());
-    }
-  }, [dispatch, projects, status]);
+  const { isLoading, isError, isSuccess, data: projects } = useQuery(['projects', 'title'], getProjectsOrderedBy);
 
   const getContent = () => {
     let content = null;
 
-    if (status === 'idle' || status === 'pending') {
+    if (isLoading) {
       content = 'loading...';
-    } else if (status === 'resolved') {
+    } else if (isSuccess) {
       content = projects.map(project => (
         <Link className={classes.link} key={project.id} to={`/project/${project.id}`}>
           <ProjectSummary project={project} />
         </Link>
       ));
-    } else if (status === 'rejected') {
+    } else if (isError) {
       content = `There's been an error, please try again`;
     }
 
