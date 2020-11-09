@@ -1,10 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Grid, Paper, Divider, makeStyles, Typography } from '@material-ui/core';
-import { useQuery, useQueryCache } from 'react-query';
 import formatRelative from 'date-fns/formatRelative';
 
-import { getProjectById } from './projectService';
+import useProject from './useProject';
 
 const useStyles = makeStyles({
   root: {
@@ -15,16 +14,7 @@ const useStyles = makeStyles({
 export default function ProjectDetails() {
   const classes = useStyles();
   const { id: projectId } = useParams();
-  const queryCache = useQueryCache();
-  const { isLoading, isError, data: projectDetails, error, isSuccess } = useQuery(
-    ['project', projectId],
-    getProjectById,
-    {
-      initialData: () => {
-        return queryCache.getQueryData(['projects', 'title'])?.find(project => project.id === projectId);
-      },
-    },
-  );
+  const { isLoading, isError, data: projectDetails, error, isSuccess } = useProject(projectId);
 
   const getContent = () => {
     let content = null;

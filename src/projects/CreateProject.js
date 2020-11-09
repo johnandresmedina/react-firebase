@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, TextField, Paper, Grid, Typography, makeStyles } from '@material-ui/core';
-import { useMutation, useQueryCache } from 'react-query';
 
-import { createProject } from './projectService';
 import { UserProfileContext } from '../context/userProfileContext';
+import useCreateProject from './useCreateProject';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,21 +29,8 @@ export default function CreateProject() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const { firstName, lastName, id: userId } = useContext(UserProfileContext);
-  const queryCache = useQueryCache();
-  const [mutate, { isError, isLoading }] = useMutation(createProject, {
-    onMutate: newProject => {
-      if (queryCache.getQueryData(['projects', 'title'])) {
-        queryCache.setQueryData(['projects', 'title'], old => [
-          { ...newProject, authorFirstName: newProject.firstName, authorLastName: newProject.lastName },
-          ...old,
-        ]);
-      }
-    },
-    onSuccess: () => {
-      queryCache.invalidateQueries(['projects', 'title']);
-    },
-    throwOnError: true,
-  });
+
+  const [mutate, { isError, isLoading }] = useCreateProject();
 
   const handleSubmit = async event => {
     event.preventDefault();

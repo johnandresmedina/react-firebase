@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, makeStyles } from '@material-ui/core';
-import { useQuery } from 'react-query';
 
-import { getProjectsOrderedBy } from './projectService';
+import useProjects from './useProjects';
 import ProjectSummary from './ProjectSummary';
 
 const useStyles = makeStyles({
@@ -14,7 +13,7 @@ const useStyles = makeStyles({
 
 export default function Projects() {
   const classes = useStyles();
-  const { isLoading, isError, isSuccess, data: projects } = useQuery(['projects', 'title'], getProjectsOrderedBy);
+  const { isLoading, isError, isSuccess, data: projects } = useProjects();
 
   const getContent = () => {
     let content = null;
