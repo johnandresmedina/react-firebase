@@ -14,7 +14,9 @@ export default function ProjectSummary({ project }) {
           <Typography>Posted by {`${project.authorFirstName} ${project.authorLastName}`}</Typography>
         </Box>
         <Box className='card-title'>
-          <Typography color='textSecondary'>{formatRelative(project.createdAt.toDate(), new Date())}</Typography>
+          <Typography color='textSecondary'>
+            {project.createdAt && formatRelative(project.createdAt.toDate(), new Date())}
+          </Typography>
         </Box>
       </Box>
     </Box>
@@ -25,7 +27,7 @@ ProjectSummary.propTypes = {
   project: PropTypes.shape({
     authorFirstName: PropTypes.string.isRequired,
     authorLastName: PropTypes.string.isRequired,
-    createdAt: PropTypes.object.isRequired,
+    createdAt: PropTypes.object,
     title: PropTypes.string.isRequired,
   }),
 };

@@ -9,13 +9,13 @@ const projectService = {
     const project = await firebase.firestore().collection('projects').doc(id).get();
     return { id: project.id, ...project.data() };
   },
-  createProject: async ({ title, content }, userProfile) => {
+  createProject: async ({ title, content, firstName, lastName, userId }) => {
     const project = await firebase.firestore().collection('projects').add({
       title,
       content,
-      authorFirstName: userProfile.firstName,
-      authorLastName: userProfile.lastName,
-      authorId: userProfile.id,
+      authorFirstName: firstName,
+      authorLastName: lastName,
+      authorId: userId,
       createdAt: new Date(),
     });
 

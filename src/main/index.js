@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import AuthProvider from '../context/authContext';
 import firebase from '../config/firebase';
-import ProjectProvider from '../context/projectContext';
 import Routes from './Routes';
 import UserProfileProvider from '../context/userProfileContext';
 
@@ -28,9 +27,7 @@ const Main = () => {
       {loaded ? (
         <AuthProvider user={user}>
           <UserProfileProvider>
-            <ProjectProvider>
-              <Routes />
-            </ProjectProvider>
+            <Routes />
           </UserProfileProvider>
         </AuthProvider>
       ) : null}

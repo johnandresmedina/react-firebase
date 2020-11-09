@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, TextField, Paper, Grid, Typography, makeStyles } from '@material-ui/core';
+import { useMutation, useQueryCache } from 'react-query';
 
-import { ProjectContext } from '../context/projectContext';
 import { createProject } from './projectService';
-import { addProject } from './projectReducer';
 import { UserProfileContext } from '../context/userProfileContext';
 
 const useStyles = makeStyles(theme => ({
@@ -30,24 +29,31 @@ export default function CreateProject() {
   const history = useHistory();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [status, setStatus] = useState('idle');
-  const [error, setError] = useState(null);
-  const { dispatch } = useContext(ProjectContext);
-  const userProfile = useContext(UserProfileContext);
+  const { firstName, lastName, id: userId } = useContext(UserProfileContext);
+  const queryCache = useQueryCache();
+  const [mutate, { isError, isLoading }] = useMutation(createProject, {
+    onMutate: newProject => {
+      if (queryCache.getQueryData(['projects', 'title'])) {
+        queryCache.setQueryData(['projects', 'title'], old => [
+          { ...newProject, authorFirstName: newProject.firstName, authorLastName: newProject.lastName },
+          ...old,
+        ]);
+      }
+    },
+    onSuccess: () => {
+      queryCache.invalidateQueries(['projects', 'title']);
+    },
+    throwOnError: true,
+  });
 
   const handleSubmit = async event => {
     event.preventDefault();
 
     try {
-      setStatus('pending');
-      const project = await createProject({ title, content }, userProfile);
-      dispatch(addProject(project));
-      setStatus('resolved');
+      await mutate({ title, content, firstName, lastName, userId });
       history.push('/');
-    } catch (error) {
-      setStatus('rejected');
-      setError(error);
-    }
+      // eslint-disable-next-line no-empty
+    } catch (error) {}
   };
 
   return (
@@ -84,15 +90,10 @@ export default function CreateProject() {
               value={content}
               onChange={event => setContent(event.target.value)}
             />
-            <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.submit}
-              disabled={status === 'pending'}>
+            <Button type='submit' variant='contained' color='primary' className={classes.submit} disabled={isLoading}>
               Create project
             </Button>
-            {error && (
+            {isError && (
               <Typography component='p' color='textPrimary'>
                 {`There's been an error creating the project, please try again`}
               </Typography>
