@@ -1,10 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useMutation } from 'react-query';
 import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, makeStyles } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { AuthContext } from '../context/authContext';
-import { login } from './authReducer';
+import { signIn } from './authService';
 
 function Copyright() {
   return (
@@ -53,11 +54,9 @@ export default function SignIn() {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {
-    state: { user },
-    dispatch,
-  } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const history = useHistory();
+  const [mutateLogin] = useMutation(signIn);
 
   useEffect(() => {
     if (user) {
@@ -65,10 +64,11 @@ export default function SignIn() {
     }
   }, [history, user]);
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
 
-    dispatch(login(email, password));
+    const loggedInUser = await mutateLogin({ email, password });
+    setUser(loggedInUser);
   };
 
   return (

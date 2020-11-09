@@ -2,7 +2,7 @@ import firebase from '../config/firebase';
 import { setUserById } from './userService';
 
 const authService = {
-  signIn: async (email, password) => {
+  signIn: async ({ email, password }) => {
     const auth = await firebase.auth().signInWithEmailAndPassword(email, password);
     return auth.user;
   },

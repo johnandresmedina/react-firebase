@@ -4,7 +4,6 @@ import { makeStyles, Box, Link, Avatar } from '@material-ui/core';
 
 import { AuthContext } from '../context/authContext';
 import { signOut } from '../auth/authService';
-import { cleanLogin } from '../auth/authReducer';
 import { UserProfileContext } from '../context/userProfileContext';
 
 const useStyles = makeStyles(theme => ({
@@ -20,13 +19,13 @@ const useStyles = makeStyles(theme => ({
 export default function SignedInLinks() {
   const classes = useStyles();
   const history = useHistory();
-  const { dispatch } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const userProfile = useContext(UserProfileContext);
 
   const handleLogOut = async () => {
     try {
       await signOut();
-      dispatch(cleanLogin());
+      setUser(null);
       history.push('/signIn');
     } catch (error) {
       // eslint-disable-next-line no-console

@@ -6,16 +6,15 @@ import Routes from './Routes';
 import UserProfileProvider from '../context/userProfileContext';
 
 const Main = () => {
-  const [user, setUser] = useState(null);
+  const [initialUser, setInitialUser] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        setUser(user);
-      } else {
-        setUser(false);
+        setInitialUser(user);
       }
+
       setLoaded(true);
     });
 
@@ -25,7 +24,7 @@ const Main = () => {
   return (
     <>
       {loaded ? (
-        <AuthProvider user={user}>
+        <AuthProvider initialUser={initialUser}>
           <UserProfileProvider>
             <Routes />
           </UserProfileProvider>

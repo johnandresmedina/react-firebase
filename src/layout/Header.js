@@ -24,9 +24,7 @@ const useStyles = makeStyles(theme => ({
 const Header = () => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    state: { user },
-  } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const toggleSidebar = event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {

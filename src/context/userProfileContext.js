@@ -7,9 +7,7 @@ export const UserProfileContext = createContext({});
 
 export default function UserProfileProvider({ children }) {
   const [userProfile, setUserProfile] = useState(null);
-  const {
-    state: { user },
-  } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     if (user) {
