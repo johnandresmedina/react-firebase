@@ -16,16 +16,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignedInLinks() {
+const SignedInLinks = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { setUser } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
   const userProfile = useContext(UserProfileContext);
 
   const handleLogOut = async () => {
     try {
       await signOut();
-      setUser(null);
+      authContext?.setUser(null);
       history.push('/signIn');
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -48,4 +48,6 @@ export default function SignedInLinks() {
       </Avatar>
     </>
   );
-}
+};
+
+export default SignedInLinks;

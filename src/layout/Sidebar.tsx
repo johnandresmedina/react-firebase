@@ -1,8 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { MoveToInbox, Mail } from '@material-ui/icons';
+
+type SideBarProps = {
+  isOpen: boolean;
+  toggleSidebar: (event: React.KeyboardEvent | React.MouseEvent) => void;
+};
 
 const useStyles = makeStyles({
   list: {
@@ -10,7 +14,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const Sidebar = ({ isOpen, toggleSidebar }: SideBarProps) => {
   const classes = useStyles();
 
   return (
@@ -36,11 +40,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </div>
     </Drawer>
   );
-};
-
-Sidebar.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  toggleSidebar: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

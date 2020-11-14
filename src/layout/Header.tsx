@@ -23,11 +23,14 @@ const useStyles = makeStyles(theme => ({
 
 const Header = () => {
   const classes = useStyles();
-  const [isOpen, setIsOpen] = useState(false);
-  const { user } = useContext(AuthContext);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const authContext = useContext(AuthContext);
 
-  const toggleSidebar = event => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+  const toggleSidebar = (event: React.KeyboardEvent | React.MouseEvent) => {
+    if (
+      event.type === 'keydown' &&
+      ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
+    ) {
       return;
     }
 
@@ -35,8 +38,8 @@ const Header = () => {
   };
 
   const links = useMemo(() => {
-    return user?.uid ? <SignedInLinks /> : <SignedOutLinks />;
-  }, [user]);
+    return authContext?.user?.uid ? <SignedInLinks /> : <SignedOutLinks />;
+  }, [authContext?.user]);
 
   return (
     <div className={classes.root}>

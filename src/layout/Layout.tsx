@@ -1,10 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Header from './Header';
 
-const Layout = ({ children }) => {
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
+const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Header />
@@ -17,10 +20,6 @@ const Layout = ({ children }) => {
       </Grid>
     </>
   );
-};
-
-Layout.propTypes = {
-  children: PropTypes.object,
 };
 
 export default Layout;

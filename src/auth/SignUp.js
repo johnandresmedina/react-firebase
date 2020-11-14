@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, makeStyles } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-import { signUp } from '../auth/authService';
+import { signUp } from './authService';
 
 function Copyright() {
   return (
@@ -61,7 +61,7 @@ export default function SignUp() {
     event.preventDefault();
 
     try {
-      await signUp(email, password, firstName, lastName);
+      await signUp({ email, password, firstName, lastName });
       history.push('/');
     } catch (error) {
       setError(error?.message);

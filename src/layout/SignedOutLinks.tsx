@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignedOutLinks() {
+const SignedOutLinks = () => {
   const classes = useStyles();
 
   return (
@@ -21,4 +21,6 @@ export default function SignedOutLinks() {
       </Link>
     </Box>
   );
-}
+};
+
+export default SignedOutLinks;
