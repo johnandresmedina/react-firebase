@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { User } from 'firebase';
 
 import AuthProvider from '../context/authContext';
 import firebase from '../config/firebase';
@@ -6,8 +7,8 @@ import Routes from './Routes';
 import UserProfileProvider from '../context/userProfileContext';
 
 const Main = () => {
-  const [initialUser, setInitialUser] = useState(null);
-  const [loaded, setLoaded] = useState(false);
+  const [initialUser, setInitialUser] = useState<User | null>(null);
+  const [loaded, setLoaded] = useState<Boolean>(false);
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {

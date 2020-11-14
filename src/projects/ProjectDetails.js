@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ProjectDetails() {
+const ProjectDetails = () => {
   const classes = useStyles();
   const { id: projectId } = useParams();
   const { isLoading, isError, data: projectDetails, error, isSuccess } = useProject(projectId);
@@ -20,7 +20,7 @@ export default function ProjectDetails() {
     let content = null;
 
     if (isLoading) {
-      content = 'Loading...';
+      content = <>{'Loading...'}</>;
     } else if (isSuccess) {
       const { title, content: projectContent, authorFirstName, authorLastName, createdAt } = projectDetails;
 
@@ -50,11 +50,13 @@ export default function ProjectDetails() {
         </Grid>
       );
     } else if (isError) {
-      content = `An error has occurred, please try again: ${error}`;
+      content = <>{`An error has occurred, please try again: ${error}`}</>;
     }
 
     return content;
   };
 
   return getContent();
-}
+};
+
+export default ProjectDetails;
