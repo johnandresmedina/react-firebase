@@ -8,7 +8,7 @@ import UserProfileProvider from '../context/userProfileContext';
 
 const Main = () => {
   const [initialUser, setInitialUser] = useState<User | null>(null);
-  const [loaded, setLoaded] = useState<Boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {

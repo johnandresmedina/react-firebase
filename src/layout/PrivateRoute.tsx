@@ -1,16 +1,21 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 
-export default function PrivateRoute({ children, ...rest }) {
-  const { user } = useContext(AuthContext);
+type PrivateRouteProps = {
+  children: React.ReactNode;
+  exact?: boolean;
+  path: string;
+};
+
+const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
+  const authContext = useContext(AuthContext);
 
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        user ? (
+        authContext?.user ? (
           children
         ) : (
           <Redirect
@@ -23,8 +28,6 @@ export default function PrivateRoute({ children, ...rest }) {
       }
     />
   );
-}
-
-PrivateRoute.propTypes = {
-  children: PropTypes.node.isRequired,
 };
+
+export default PrivateRoute;
