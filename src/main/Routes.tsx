@@ -26,7 +26,7 @@ const Routes = () => {
           <PrivateRoute path='/create'>
             <CreateProject />
           </PrivateRoute>
-          <PrivateRoute path='/project/:id'>
+          <PrivateRoute path='/project/:projectId'>
             <ProjectDetails />
           </PrivateRoute>
         </Switch>

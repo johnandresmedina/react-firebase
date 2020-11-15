@@ -13,21 +13,21 @@ const useStyles = makeStyles({
 
 const ProjectDetails = () => {
   const classes = useStyles();
-  const { id: projectId } = useParams();
+  const { projectId } = useParams<{ projectId: string }>();
   const { isLoading, isError, data: projectDetails, error, isSuccess } = useProject(projectId);
 
   const getContent = () => {
-    let content = null;
+    let content: React.ReactElement | null = null;
 
     if (isLoading) {
       content = <>{'Loading...'}</>;
-    } else if (isSuccess) {
+    } else if (isSuccess && projectDetails) {
       const { title, content: projectContent, authorFirstName, authorLastName, createdAt } = projectDetails;
 
       content = (
         <Grid container className={classes.root}>
-          <Grid item xs={6}>
-            <Box component={Paper} elevation={2} square p={2}>
+          <Grid item xs={6} component={Paper} elevation={2} square>
+            <Box p={2}>
               <Box className='card-content' mb={2}>
                 <Box className='card-title'>
                   <Typography component='h1' variant='h5'>
@@ -42,7 +42,7 @@ const ProjectDetails = () => {
                   {`${authorFirstName} ${authorLastName}`}
                 </Typography>
                 <Typography component='p' color='textSecondary'>
-                  {formatRelative(createdAt?.toDate(), new Date())}
+                  {formatRelative(createdAt, new Date())}
                 </Typography>
               </Box>
             </Box>

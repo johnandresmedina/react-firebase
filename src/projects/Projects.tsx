@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Projects() {
+const Projects = () => {
   const classes = useStyles();
   const { isLoading, isError, isSuccess, data: projects } = useProjects();
 
@@ -20,7 +20,7 @@ export default function Projects() {
 
     if (isLoading) {
       content = 'loading...';
-    } else if (isSuccess) {
+    } else if (isSuccess && projects) {
       content = projects.map(project => (
         <Link className={classes.link} key={project.id} to={`/project/${project.id}`}>
           <ProjectSummary project={project} />
@@ -34,4 +34,6 @@ export default function Projects() {
   };
 
   return <Box className='project-list'>{getContent()}</Box>;
-}
+};
+
+export default Projects;

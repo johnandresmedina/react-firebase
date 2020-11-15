@@ -1,11 +1,11 @@
 import firebase from '../config/firebase';
 
-type UserProfile = {
+type UserProfileBaseType = {
   firstName: string;
   lastName: string;
 };
 
-export type UserProfileType = { id: string } & UserProfile;
+export type UserProfileType = { id: string } & UserProfileBaseType;
 
 const userService = {
   setUserById: async (userId: string, firstName: string, lastName: string): Promise<void> => {
@@ -19,7 +19,7 @@ const userService = {
       .firestore()
       .collection('users')
       .doc(userId)
-      .get()) as firebase.firestore.DocumentSnapshot<UserProfile>;
+      .get()) as firebase.firestore.DocumentSnapshot<UserProfileBaseType>;
 
     let userProfile = null;
     const userData = user.data();

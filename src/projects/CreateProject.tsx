@@ -23,20 +23,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function CreateProject() {
+const CreateProject = () => {
   const classes = useStyles();
   const history = useHistory();
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const { firstName, lastName, id: userId } = useContext(UserProfileContext);
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const userProfileContext = useContext(UserProfileContext);
 
   const [mutate, { isError, isLoading }] = useCreateProject();
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      await mutate({ title, content, firstName, lastName, userId });
+      const { firstName, lastName, id: userId } = userProfileContext!;
+
+      await mutate({
+        title,
+        content,
+        authorFirstName: firstName,
+        authorLastName: lastName,
+        createdAt: Date.now(),
+        authorId: userId,
+      });
       history.push('/');
       // eslint-disable-next-line no-empty
     } catch (error) {}
@@ -89,4 +98,6 @@ export default function CreateProject() {
       </Grid>
     </Grid>
   );
-}
+};
+
+export default CreateProject;
