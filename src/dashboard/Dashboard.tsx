@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Notifications from './Notifications';
 import Projects from '../projects/Projects';
 
-export default function Dashboard() {
+const Dashboard = () => {
   return (
     <Grid container className='dashboard'>
       <Grid item xs={6}>
@@ -20,4 +20,6 @@ export default function Dashboard() {
       </Grid>
     </Grid>
   );
-}
+};
+
+export default Dashboard;

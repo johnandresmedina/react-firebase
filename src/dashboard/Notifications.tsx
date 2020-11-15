@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Paper, Typography, List, ListItem, ListItemText } from '@material-ui/core';
+import { Box, Paper, Typography, List, ListItem, ListItemText, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -9,12 +9,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Notifications() {
+const Notifications = () => {
   const classes = useStyles();
 
   return (
-    <Box className='project-summary' component={Paper} elevation={2} square mb={1} my={2} paddingX={3}>
-      <Box className='card-content' p={2}>
+    <Grid item component={Paper} elevation={2} square>
+      <Box className='card-content' p={2} mb={1} my={2} paddingX={3}>
         <Box className='card-title'>
           <Typography variant='h5'>Notifications</Typography>
         </Box>
@@ -27,6 +27,8 @@ export default function Notifications() {
           </ListItem>
         </List>
       </Box>
-    </Box>
+    </Grid>
   );
-}
+};
+
+export default Notifications;
