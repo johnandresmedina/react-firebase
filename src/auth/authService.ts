@@ -12,14 +12,14 @@ type SignUp = {
 } & EmailPassword;
 
 const authService = {
-  signIn: async ({ email, password }: EmailPassword) => {
+  signIn: async ({ email, password }: EmailPassword): Promise<firebase.User | null> => {
     const auth = await firebase.auth().signInWithEmailAndPassword(email, password);
     return auth.user;
   },
   signOut: async (): Promise<void> => {
     await firebase.auth().signOut();
   },
-  signUp: async ({ email, password, firstName, lastName }: SignUp) => {
+  signUp: async ({ email, password, firstName, lastName }: SignUp): Promise<void> => {
     const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
 
     if (result.user?.uid) {

@@ -5,20 +5,8 @@ import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, makeStyl
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { AuthContext } from '../context/authContext';
+import Copyright from './Copyright';
 import { signIn } from './authService';
-
-function Copyright() {
-  return (
-    <Typography variant='body2' color='textSecondary' align='center'>
-      {'Copyright © '}
-      <Link color='inherit' href='https://material-ui.com/'>
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,25 +38,28 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignIn() {
+const SignIn = () => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { user, setUser } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
   const history = useHistory();
   const [mutateLogin] = useMutation(signIn);
 
   useEffect(() => {
-    if (user) {
+    if (authContext?.user) {
       history.push('/');
     }
-  }, [history, user]);
+  }, [history, authContext?.user]);
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const loggedInUser = await mutateLogin({ email, password });
-    setUser(loggedInUser);
+
+    if (loggedInUser) {
+      authContext?.setUser(loggedInUser);
+    }
   };
 
   return (
@@ -126,4 +117,6 @@ export default function SignIn() {
       </Grid>
     </Grid>
   );
-}
+};
+
+export default SignIn;
